@@ -61,9 +61,7 @@ NSString* password;
 NSInteger baseWidth1 = 375;
 NSInteger baseHeight1 = 667;
 float screenWidthIndex1;
-float screenWidthIndex12;
 float screenHeightIndex1;
-NSInteger ipadVariable = 0;
 BOOL isLoading = NO;
 NSInteger isLoadingIndex = 0;
 
@@ -77,18 +75,18 @@ NSInteger isLoadingIndex = 0;
     [formatter setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
     self.currentTime = [formatter stringFromDate:[NSDate date]];
     self.startTime = self.currentTime;
-//    self.charUUID = self.lblStatus.text;
+    self.charUUID = self.lblStatus.text;
     
-//    [self startStopReading:nil];
-//    self.lblStatus.hidden = YES;
+    //[self startStopReading:nil];
+    self.lblStatus.hidden = YES;
     // Initially make the captureSession object nil.
     _captureSession = nil;
     
     // Set the initial value of the flag to NO.
-//    _isReading = NO;
+    _isReading = NO;
     
     // Begin loading the sound effect so to have it ready for playback when it's needed.
-//    [self loadBeepSound];
+    [self loadBeepSound];
     
     self.lumi =[[UIImageView alloc] initWithFrame:CGRectMake(0,15,35,35)];
     self.lumi.image=[UIImage imageNamed:@"lumi.png"];
@@ -103,24 +101,18 @@ NSInteger isLoadingIndex = 0;
     username = [data currentUser];
     password = [data currentPassword];
     [self sizeSettings];
-    if (self.view.frame.size.height == 1024) {
-        screenWidthIndex12 = screenWidthIndex1;
-        ipadVariable = 75;
-        screenWidthIndex1 = screenWidthIndex1 * 0.75;
-    }else {
-        ipadVariable = 0;
-    }
+    
     
     self.centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil options:@{CBCentralManagerOptionRestoreIdentifierKey :@"GeneratorCentral"}];
     [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(myTimerTick:) userInfo:nil repeats:YES];
     [NSThread detachNewThreadSelector:@selector(myTimerTick:) toTarget:self withObject:nil];
     self.startTime = self.currentTime;
-//    [self checkForNetworkReachability];
+    [self checkForNetworkReachability];
     [self loadBaloon];
     // Do any additional setup after loading the view, typically from a nib.
 }
 -(void) loadBaloon {
-    self.balloon =[[UIImageView alloc] initWithFrame:CGRectMake(63*screenWidthIndex12+ipadVariable,160*screenHeightIndex1,240*screenWidthIndex1,355*screenHeightIndex1)];
+    self.balloon =[[UIImageView alloc] initWithFrame:CGRectMake(63*screenWidthIndex1,160*screenHeightIndex1,240*screenWidthIndex1,355*screenHeightIndex1)];
     self.balloon.image=[UIImage imageNamed:@"balloon_blue.png"];
     [self.view addSubview:self.balloon];
     self.balloon.hidden = YES;
@@ -128,12 +120,12 @@ NSInteger isLoadingIndex = 0;
     
     self.verbositySelector.selectedSegmentIndex = 1;
     
-    self.myLabel = [[UILabel alloc] initWithFrame:CGRectMake(149*screenWidthIndex12+ipadVariable, 292*screenHeightIndex1, 350*screenWidthIndex1, 50*screenHeightIndex1)];
+    self.myLabel = [[UILabel alloc] initWithFrame:CGRectMake(149*screenWidthIndex1, 292*screenHeightIndex1, 350*screenWidthIndex1, 50*screenHeightIndex1)];
     self.myLabel.textColor = [UIColor whiteColor];
     self.myLabel.hidden = YES;
 }
 -(void)viewWillAppear:(BOOL)animated {
-//    [self checkForNetworkReachability];
+    [self checkForNetworkReachability];
 }
 - (void) sizeSettings
 {
@@ -160,14 +152,18 @@ NSInteger isLoadingIndex = 0;
     [alert addAction:defaultAction];
     [self presentViewController:alert animated:YES completion:nil];
 }
+
 - (IBAction)exitButton:(id)sender {
     self.centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil options:@{CBCentralManagerOptionRestoreIdentifierKey :@"GeneratorCentral"}];
+    
+    [self.centralManager cancelPeripheralConnection:self.connectedPeripheral];
+    self.connectedPeripheral = nil;
     
     self.viewPreview.hidden = YES;
     self.lumi.hidden = YES;
     self.balloon.hidden = YES;
     self.myLabel.hidden = YES;
-    [self startStopReading:nil];
+    //[self startStopReading:nil];
     
     // Initially make the captureSession object nil.
     _captureSession = nil;
@@ -175,7 +171,6 @@ NSInteger isLoadingIndex = 0;
     // Set the initial value of the flag to NO.
     _isReading = NO;
     [self loadBeepSound];
-    [self checkForNetworkReachability];
     [self getR];
 }
 
@@ -197,22 +192,21 @@ NSInteger isLoadingIndex = 0;
 - (IBAction)connectDevice:(id)sender {
     self.centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil options:@{CBCentralManagerOptionRestoreIdentifierKey :@"GeneratorCentral"}];
     
-    self.viewPreview.hidden = NO;
+    
+    self.viewPreview.hidden = YES;
     self.lumi.hidden = YES;
     self.balloon.hidden = YES;
     self.myLabel.hidden = YES;
-//    [self startStopReading:nil];
-//    isLoadingIndex = 0;
-//    isLoading = NO;
-//    self.lblStatus.text = [NSString stringWithFormat:@"Scanning for QR Code..."];
+    [self startStopReading:nil];
     
     // Initially make the captureSession object nil.
-//    _captureSession = nil;
+    _captureSession = nil;
     
     // Set the initial value of the flag to NO.
-//    _isReading = NO;
-//    [self loadBeepSound];
+    _isReading = NO;
+    [self loadBeepSound];
     [self getR];
+
     
 }
 
@@ -252,7 +246,7 @@ NSInteger isLoadingIndex = 0;
     NSLog(@"requestReply: %@", requestReply);
     
     coreDataController * coreData = [[coreDataController alloc] init];
-    [coreData addData:[NSString stringWithFormat:@"%ld",AllSum/10] atDate:[NSDate date] forUser:username];
+    [coreData addData:[NSString stringWithFormat:@"%ld",AllSum] atDate:[NSDate date] forUser:username];
     
     AllSum = 0;
     self.startTime = self.currentTime;
@@ -288,25 +282,25 @@ NSInteger isLoadingIndex = 0;
     
     self.testLabel.text = [NSString stringWithFormat:@"%ld", AllSum];
     
-//    if ([self.lblStatus.text isEqualToString:@"Scanning for QR Code..."]) {
-//        NSLog(@"wait for it");
-//    }else{
-//        if ([self.lblStatus.text isEqualToString:@"haha"]) {
-//            NSLog(@"do nothing");
-//        } else {
-//            NSLog(@"action");
-//            self.charUUID = self.lblStatus.text;
-//            self.viewPreview.hidden = YES;
-//            self.lumi.hidden = NO;
-//            
-//            [self startbutt];
-//            self.lblStatus.text = [NSString stringWithFormat:@"haha"];
-//            
-//            [self loadingToConnect];
-//            
-//            
-//        }
-//    }
+    if ([self.lblStatus.text isEqualToString:@"Scanning for QR Code..."]) {
+        NSLog(@"wait for it");
+    }else{
+        if ([self.lblStatus.text isEqualToString:@"haha"]) {
+            NSLog(@"do nothing");
+        } else {
+            NSLog(@"action");
+            self.charUUID = self.lblStatus.text;
+            self.viewPreview.hidden = YES;
+            self.lumi.hidden = NO;
+            
+            [self startbutt];
+            self.lblStatus.text = [NSString stringWithFormat:@"haha"];
+            
+            [self loadingToConnect];
+            
+            
+        }
+    }
     
     [UIView animateWithDuration:0.5f
                      animations:^{
@@ -404,7 +398,9 @@ NSMutableArray* dataArray;
     //    NSArray *scanOptions = state[CBCentralManagerRestoredStateScanOptionsKey];
     
     NSArray*peripherals = state[CBCentralManagerRestoredStatePeripheralsKey];
-    }
+    
+    
+}
 
 -(void) centralManager:(CBCentralManager *)central
  didDiscoverPeripheral:(CBPeripheral *)peripheral
@@ -413,8 +409,7 @@ NSMutableArray* dataArray;
 {
     NSLog(@"Discovered %@", peripheral.identifier.UUIDString);
     NSLog(@"NAME %@", peripheral.name);
-    self.charUUID = @"Lumi Connect";
-    if([peripheral.name isEqualToString:self.charUUID])    {
+    if([peripheral.name isEqualToString:@"Lumi Connect"])    {
         [self.centralManager connectPeripheral:peripheral options:nil];
         desiredPeripheral = peripheral;
     }
@@ -431,6 +426,7 @@ didFailToConnectPeripheral:(CBPeripheral *)peripheral
 {
     peripheral.delegate = self;
     [peripheral discoverServices:nil];
+    self.connectedPeripheral = peripheral;
 }
 
 -(void)peripheral:(CBPeripheral *)peripheral didDiscoverServices:(NSError *)error
@@ -514,12 +510,16 @@ didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic
 #pragma mark - IBAction method implementation
 
 - (IBAction)startStopReading:(id)sender {
+    
+    [self.centralManager scanForPeripheralsWithServices:nil options:nil];
+    [_lblStatus setText:@"action"];
+    return;
     if (!_isReading) {
         // This is the case where the app should read a QR code when the start button is tapped.
         if ([self startReading]) {
             // If the startReading methods returns YES and the capture session is successfully
             // running, then change the start button title and the status message.
-            [_bbitemStart setTitle:@"Stop"];
+            //[_bbitemStart setTitle:@"Stop"];
             [_lblStatus setText:@"Scanning for QR Code..."];
         }
     }
@@ -539,7 +539,10 @@ didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic
 
 - (BOOL)startReading {
     NSError *error;
+    [self.centralManager scanForPeripheralsWithServices:nil options:nil];
+    [_lblStatus setText:@"action"];
     
+    return YES;
     // Get an instance of the AVCaptureDevice class to initialize a device object and provide the video
     // as the media type parameter.
     AVCaptureDevice *captureDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];

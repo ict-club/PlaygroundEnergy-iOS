@@ -26,6 +26,7 @@ AVCaptureMetadataOutputObjectsDelegate
 @property (weak, nonatomic) IBOutlet UILabel *lblStatus;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *bbitemStart;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *loadingToConnectActivityMonitor;
+@property (strong, nonatomic) CBPeripheral * connectedPeripheral;
 
 - (IBAction)startStopReading:(id)sender;
 
