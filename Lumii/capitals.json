@@ -1,0 +1,30 @@
+[
+  {
+    "Country":"Bulgaria",
+    "Capital":"Sofia Center",
+    "Latitude":42.697387,
+    "Longitude":23.32406,
+    "address":"Sofia, Bulgaria"
+  },
+  {
+    "Country":"Bulgaria",
+    "Capital":"Sofia gen.Gurko 6",
+    "Latitude":42.694065,
+    "Longitude":23.324213,
+    "address":"Sofia gen.Gurko 6"
+  },
+ {
+ "Country":"Bulgaria",
+ "Capital":"Sofia Park Studentski grad",
+ "Latitude":42.649642,
+ "Longitude":23.345059,
+ "address":"Studentski grad, 12 bul. A. Petkov"
+ },
+ {
+ "Country":"Bulgaria",
+ "Capital":"Burgas",
+ "Latitude":42.497937,
+ "Longitude":27.480016,
+ "address":"Burgas, Bulgaria"
+ }
+]
