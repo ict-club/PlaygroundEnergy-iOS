@@ -62,6 +62,8 @@ NSInteger baseWidth1 = 375;
 NSInteger baseHeight1 = 667;
 float screenWidthIndex1;
 float screenHeightIndex1;
+float screenWidthIndex12 = 1;
+NSInteger ipadVariable = 0;
 BOOL isLoading = NO;
 NSInteger isLoadingIndex = 0;
 
@@ -101,7 +103,13 @@ NSInteger isLoadingIndex = 0;
     username = [data currentUser];
     password = [data currentPassword];
     [self sizeSettings];
-    
+    if (self.view.frame.size.height == 1024) {
+        screenWidthIndex12 = screenWidthIndex1;
+        ipadVariable = 75;
+        screenWidthIndex1 = screenWidthIndex1 * 0.75;
+    }else {
+        ipadVariable = 0;
+    }
     
     self.centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil options:@{CBCentralManagerOptionRestoreIdentifierKey :@"GeneratorCentral"}];
     [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(myTimerTick:) userInfo:nil repeats:YES];
@@ -112,7 +120,7 @@ NSInteger isLoadingIndex = 0;
     // Do any additional setup after loading the view, typically from a nib.
 }
 -(void) loadBaloon {
-    self.balloon =[[UIImageView alloc] initWithFrame:CGRectMake(63*screenWidthIndex1,160*screenHeightIndex1,240*screenWidthIndex1,355*screenHeightIndex1)];
+    self.balloon =[[UIImageView alloc] initWithFrame:CGRectMake((63*screenWidthIndex12)+ipadVariable,160*screenHeightIndex1,240*screenWidthIndex1,355*screenHeightIndex1)];
     self.balloon.image=[UIImage imageNamed:@"balloon_blue.png"];
     [self.view addSubview:self.balloon];
     self.balloon.hidden = YES;
@@ -120,7 +128,7 @@ NSInteger isLoadingIndex = 0;
     
     self.verbositySelector.selectedSegmentIndex = 1;
     
-    self.myLabel = [[UILabel alloc] initWithFrame:CGRectMake(149*screenWidthIndex1, 292*screenHeightIndex1, 350*screenWidthIndex1, 50*screenHeightIndex1)];
+    self.myLabel = [[UILabel alloc] initWithFrame:CGRectMake((149*screenWidthIndex12)+ipadVariable, 292*screenHeightIndex1, 350*screenWidthIndex1, 50*screenHeightIndex1)];
     self.myLabel.textColor = [UIColor whiteColor];
     self.myLabel.hidden = YES;
 }
@@ -246,7 +254,7 @@ NSInteger isLoadingIndex = 0;
     NSLog(@"requestReply: %@", requestReply);
     
     coreDataController * coreData = [[coreDataController alloc] init];
-    [coreData addData:[NSString stringWithFormat:@"%ld",AllSum] atDate:[NSDate date] forUser:username];
+    [coreData addData:[NSString stringWithFormat:@"%ld",AllSum/2] atDate:[NSDate date] forUser:username];
     
     AllSum = 0;
     self.startTime = self.currentTime;
@@ -487,7 +495,7 @@ didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic
     unichar ch = [stringFromData characterAtIndex:0]; // assume the 1st character
     int code = (int)ch;
     sum = code;
-    self.myLabel.text = [NSString stringWithFormat:@"%ld", (AllSum/10)];
+    self.myLabel.text = [NSString stringWithFormat:@"%ld", (AllSum/2)];
     
 }
 
