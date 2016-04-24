@@ -13,6 +13,9 @@
 #import "AccountViewController.h"
 #import <CoreBluetooth/CoreBluetooth.h>
 #import <AVFoundation/AVFoundation.h>
+#import "RDBluetoothLowEnergy.h"
+
+
 @interface ConnectViewController : UIViewController
 <
 CBCentralManagerDelegate,
@@ -27,6 +30,14 @@ AVCaptureMetadataOutputObjectsDelegate
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *bbitemStart;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *loadingToConnectActivityMonitor;
 @property (strong, nonatomic) CBPeripheral * connectedPeripheral;
+
+
+//
+//@property (nonatomic, strong) NSArray * deviceNamesArray;
+//@property (nonatomic, strong) NSArray * deviceIDArray;
+//@property (nonatomic, strong) RDBluetoothLowEnergy * bleCommunication;
+//@property (nonatomic, strong) BluetoothDeviceList * bluetoothDevices;
+
 
 - (IBAction)startStopReading:(id)sender;
 

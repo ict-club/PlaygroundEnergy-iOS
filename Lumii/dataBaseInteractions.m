@@ -155,7 +155,7 @@
     NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
     NSString * jsonData = [NSString stringWithFormat:@"{\"period\":\"%ld\"}", period];
     NSLog(@"%@", jsonData);
-    NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
+//    NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
     NSMutableURLRequest *request;
     request = [[NSMutableURLRequest alloc] init];
     [request setURL:[NSURL URLWithString:@"http://www.rapiddevcrew.com/Lumi/userchartForTime"]];
@@ -174,28 +174,18 @@
 - (NSString*) pointsTransactionWithUserName:(NSString*)username withPass:(NSString*)password withPoints:(NSInteger)points
 {
     NSString* req = [NSString stringWithFormat:@"{\"username\":\"%@\",\"password\":\"%@\", \"points\": \"%ld\"}", username, password, points];
-//    NSString * userdata = [NSString stringWithFormat:@"{\"username\":\"%@\",\"password\":\"%@\"}", user, pass];
-//    NSLog(@"%@", userdata);
     NSLog(@"%@",req);
-    
-    
     NSString *post = [NSString stringWithFormat:@""];
     NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
     
-    NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
+//    NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
     NSMutableURLRequest *request;
     request = [[NSMutableURLRequest alloc] init];
     [request setURL:[NSURL URLWithString:@"http://www.rapiddevcrew.com/Lumi/pointsTransaction"]];
-    
-    
-    
     [request setHTTPMethod:@"POST"];
 //    [request setValue:userdata forHTTPHeaderField:@"Credentials"];
     [request setValue:req forHTTPHeaderField:@"Credentials"];
     [request setHTTPBody:postData];
-    
-    
-    
     NSURLResponse *requestResponse;
     NSData *requestHandler = [NSURLConnection sendSynchronousRequest:request returningResponse:&requestResponse error:nil];
     

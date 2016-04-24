@@ -17,6 +17,7 @@
 		D310E1AF1B946AB1001F397C /* ssttaaaa.png in Resources */ = {isa = PBXBuildFile; fileRef = D310E1AD1B946AB1001F397C /* ssttaaaa.png */; };
 		D328EEA71CBAF9C00071978D /* StoryboardiPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D328EEA61CBAF9C00071978D /* StoryboardiPad.storyboard */; };
 		D32D478B1CAB3D36005117E5 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = D32D478A1CAB3D36005117E5 /* Reachability.m */; };
+		D346AAE01CC5FACE00FEC109 /* RDBluetoothLowEnergy.m in Sources */ = {isa = PBXBuildFile; fileRef = D346AADF1CC5FACE00FEC109 /* RDBluetoothLowEnergy.m */; };
 		D360CE7A1BB1B198001CFCAA /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = D360CE791BB1B198001CFCAA /* LaunchScreen.xib */; };
 		D37E6B6C1B80425E00FF4C59 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D37E6B631B80425E00FF4C59 /* HomeViewController.m */; };
 		D37E6B6D1B80425E00FF4C59 /* ConnectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D37E6B651B80425E00FF4C59 /* ConnectViewController.m */; };
@@ -144,6 +145,9 @@
 		D328EEA61CBAF9C00071978D /* StoryboardiPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = StoryboardiPad.storyboard; sourceTree = "<group>"; };
 		D32D47891CAB3D36005117E5 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		D32D478A1CAB3D36005117E5 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		D346AADD1CC5FACE00FEC109 /* RDBluetoothLowEnergyDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RDBluetoothLowEnergyDelegate.h; sourceTree = "<group>"; };
+		D346AADE1CC5FACE00FEC109 /* RDBluetoothLowEnergy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RDBluetoothLowEnergy.h; sourceTree = "<group>"; };
+		D346AADF1CC5FACE00FEC109 /* RDBluetoothLowEnergy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RDBluetoothLowEnergy.m; sourceTree = "<group>"; };
 		D360CE791BB1B198001CFCAA /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
 		D37E6B621B80425E00FF4C59 /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
 		D37E6B631B80425E00FF4C59 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
@@ -344,6 +348,9 @@
 				D3BF96071B8D684400A292E0 /* MapViewAnnotation.m */,
 				D3BF96081B8D684400A292E0 /* JFMapAnnotation.h */,
 				D3BF96091B8D684400A292E0 /* JFMapAnnotation.m */,
+				D346AADD1CC5FACE00FEC109 /* RDBluetoothLowEnergyDelegate.h */,
+				D346AADE1CC5FACE00FEC109 /* RDBluetoothLowEnergy.h */,
+				D346AADF1CC5FACE00FEC109 /* RDBluetoothLowEnergy.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -667,6 +674,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				10704D461B814E9E00A6748B /* StatisticsViewController.m in Sources */,
+				D346AAE01CC5FACE00FEC109 /* RDBluetoothLowEnergy.m in Sources */,
 				D3C2E13A1B80420B0059E41F /* ViewController.m in Sources */,
 				D3BF96211B8D68A500A292E0 /* PointsConversionViewController.m in Sources */,
 				D3BF960A1B8D684400A292E0 /* MapViewAnnotation.m in Sources */,

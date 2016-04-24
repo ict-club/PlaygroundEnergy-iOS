@@ -11,7 +11,7 @@
 #import "coreDataController.h"
 #import "dataBaseInteractions.h"
 #import <QuartzCore/QuartzCore.h>
-#import "Reachability.h"
+//#import "Reachability.h"
 
 
 @interface ConnectViewController ()
@@ -60,17 +60,22 @@ NSString* username;
 NSString* password;
 NSInteger baseWidth1 = 375;
 NSInteger baseHeight1 = 667;
+float sizeFont = 40;
 float screenWidthIndex1;
 float screenHeightIndex1;
 float screenWidthIndex12 = 1;
 NSInteger ipadVariable = 0;
+NSInteger ipadVariable2 = 0;
 BOOL isLoading = NO;
 NSInteger isLoadingIndex = 0;
+NSTimer * myTimer;
+NSTimer * myTimer1;
 
 @synthesize loadingToConnectActivityMonitor;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     
     characteristic = [CBCharacteristic alloc];
     formatter = [[NSDateFormatter alloc] init];
@@ -106,16 +111,19 @@ NSInteger isLoadingIndex = 0;
     if (self.view.frame.size.height == 1024) {
         screenWidthIndex12 = screenWidthIndex1;
         ipadVariable = 75;
+        ipadVariable2 = 25;
         screenWidthIndex1 = screenWidthIndex1 * 0.75;
+        sizeFont = 80;
     }else {
         ipadVariable = 0;
+        ipadVariable2 = 0;
     }
     
     self.centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil options:@{CBCentralManagerOptionRestoreIdentifierKey :@"GeneratorCentral"}];
-    [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(myTimerTick:) userInfo:nil repeats:YES];
+    myTimer1 = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(myTimerTick:) userInfo:nil repeats:YES];
     [NSThread detachNewThreadSelector:@selector(myTimerTick:) toTarget:self withObject:nil];
     self.startTime = self.currentTime;
-    [self checkForNetworkReachability];
+//    [self checkForNetworkReachability];
     [self loadBaloon];
     // Do any additional setup after loading the view, typically from a nib.
 }
@@ -128,41 +136,44 @@ NSInteger isLoadingIndex = 0;
     
     self.verbositySelector.selectedSegmentIndex = 1;
     
-    self.myLabel = [[UILabel alloc] initWithFrame:CGRectMake((149*screenWidthIndex12)+ipadVariable, 292*screenHeightIndex1, 350*screenWidthIndex1, 50*screenHeightIndex1)];
+    self.myLabel = [[UILabel alloc] initWithFrame:CGRectMake((140*screenWidthIndex12)-ipadVariable2+ipadVariable, 292*screenHeightIndex1, 350*screenWidthIndex1, 50*screenHeightIndex1)];
     self.myLabel.textColor = [UIColor whiteColor];
     self.myLabel.hidden = YES;
+    self.myLabel.text = @"";
 }
 -(void)viewWillAppear:(BOOL)animated {
-    [self checkForNetworkReachability];
+//    [self checkForNetworkReachability];
 }
 - (void) sizeSettings
 {
     screenWidthIndex1 = self.view.frame.size.width / baseWidth1;
     screenHeightIndex1 = self.view.frame.size.height / baseHeight1;
 }
-#pragma mark Network Reachability
--(void)checkForNetworkReachability {
-    Reachability *networkReachability = [Reachability reachabilityForInternetConnection];
-    NetworkStatus networkStatus = [networkReachability currentReachabilityStatus];
-    if (networkStatus == NotReachable) {
-        NSLog(@"There is no internet connection");
-        [self showErrorMessage];
-    } else {
-        NSLog(@"There is internet connection");
-    }
-}
--(void)showErrorMessage{
-    //    [self.pending dismissViewControllerAnimated:YES completion:nil];
-    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Error" message:@"No network connection" preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-        [self.tabBarController setSelectedIndex:0];
-    }];
-    [alert addAction:defaultAction];
-    [self presentViewController:alert animated:YES completion:nil];
-}
+//#pragma mark Network Reachability
+//-(void)checkForNetworkReachability {
+//    Reachability *networkReachability = [Reachability reachabilityForInternetConnection];
+//    NetworkStatus networkStatus = [networkReachability currentReachabilityStatus];
+//    if (networkStatus == NotReachable) {
+//        NSLog(@"There is no internet connection");
+//        [self showErrorMessage];
+//    } else {
+//        NSLog(@"There is internet connection");
+//    }
+//}
+//-(void)showErrorMessage{
+//    //    [self.pending dismissViewControllerAnimated:YES completion:nil];
+//    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Error" message:@"No network connection" preferredStyle:UIAlertControllerStyleAlert];
+//    UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+//        [self.tabBarController setSelectedIndex:0];
+//    }];
+//    [alert addAction:defaultAction];
+//    [self presentViewController:alert animated:YES completion:nil];
+//}
 
 - (IBAction)exitButton:(id)sender {
     self.centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil options:@{CBCentralManagerOptionRestoreIdentifierKey :@"GeneratorCentral"}];
+    
+    AllSum = 0;
     
     [self.centralManager cancelPeripheralConnection:self.connectedPeripheral];
     self.connectedPeripheral = nil;
@@ -201,10 +212,10 @@ NSInteger isLoadingIndex = 0;
     self.centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil options:@{CBCentralManagerOptionRestoreIdentifierKey :@"GeneratorCentral"}];
     
     
-    self.viewPreview.hidden = YES;
-    self.lumi.hidden = YES;
-    self.balloon.hidden = YES;
-    self.myLabel.hidden = YES;
+//    self.viewPreview.hidden = YES;
+//    self.lumi.hidden = YES;
+//    self.balloon.hidden = YES;
+//    self.myLabel.hidden = YES;
     [self startStopReading:nil];
     
     // Initially make the captureSession object nil.
@@ -215,7 +226,6 @@ NSInteger isLoadingIndex = 0;
     [self loadBeepSound];
     [self getR];
 
-    
 }
 
 -(void) getR {
@@ -256,7 +266,7 @@ NSInteger isLoadingIndex = 0;
     coreDataController * coreData = [[coreDataController alloc] init];
     [coreData addData:[NSString stringWithFormat:@"%ld",AllSum/2] atDate:[NSDate date] forUser:username];
     
-    AllSum = 0;
+//    AllSum = 0;
     self.startTime = self.currentTime;
     
     
@@ -265,6 +275,8 @@ NSInteger isLoadingIndex = 0;
 
 
 -(void)myTimerTick:(NSTimer *)timer {
+    
+//    self.centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil options:@{CBCentralManagerOptionRestoreIdentifierKey :@"GeneratorCentral"}];
     
     //#define SERVICE_UUID        @ ""
     //#define CHARACTERISTIC_UUID @ ""
@@ -285,10 +297,12 @@ NSInteger isLoadingIndex = 0;
     self.currentTime = [formatter stringFromDate:[NSDate date]];
     
     AllSum += sum;
+    sum = 0;
+    NSLog(@"---%ld", (long)AllSum);
     NSLog(@"%@",self.charUUID);
+    self.myLabel.text = [NSString stringWithFormat:@"%ld", AllSum/2];
     
-    
-    self.testLabel.text = [NSString stringWithFormat:@"%ld", AllSum];
+    self.testLabel.text = [NSString stringWithFormat:@"%ld", (long)AllSum];
     
     if ([self.lblStatus.text isEqualToString:@"Scanning for QR Code..."]) {
         NSLog(@"wait for it");
@@ -331,7 +345,7 @@ NSInteger isLoadingIndex = 0;
     self.labelWithData.text = currentMessage;
     
     
-    [self.myLabel setFont:[UIFont fontWithName:@"Avenir" size:40.0]];
+    [self.myLabel setFont:[UIFont fontWithName:@"Avenir" size:sizeFont]];
     [self.view addSubview:self.myLabel];
     
     
@@ -435,6 +449,8 @@ didFailToConnectPeripheral:(CBPeripheral *)peripheral
     peripheral.delegate = self;
     [peripheral discoverServices:nil];
     self.connectedPeripheral = peripheral;
+    [myTimer invalidate];
+
 }
 
 -(void)peripheral:(CBPeripheral *)peripheral didDiscoverServices:(NSError *)error
@@ -472,7 +488,18 @@ didFailToConnectPeripheral:(CBPeripheral *)peripheral
     }
     
 }
-
+//- (void) didDisconnectDevice:(CBPeripheral *)device {
+//    
+//    for(BluetoothDevice * aDevice in self.bluetoothDevices)
+//    {
+//        if(aDevice.device.name == device.name)
+//        {
+//            aDevice.connected = NO;
+//            [self.tableView reloadData];
+//            break;
+//        }
+//    }
+//}
 - (void) peripheral:(CBPeripheral *)peripheral
 didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic
               error:(NSError *)error
@@ -653,9 +680,30 @@ didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic
     
     
 }
-
-
-
+-(void)centralManager:(CBCentralManager *)central didDisconnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error{
+    NSLog(@"disconnectdisconnectdisconnect");
+    myTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(myTimerTick:) userInfo:nil repeats:YES];
+    [NSThread detachNewThreadSelector:@selector(myTimerTick1:) toTarget:self withObject:nil];
+    
+}
+-(void)myTimerTick1:(NSTimer *)timer {
+    self.centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil options:@{CBCentralManagerOptionRestoreIdentifierKey :@"GeneratorCentral"}];
+    
+    
+//    self.viewPreview.hidden = YES;
+//    self.lumi.hidden = YES;
+//    self.balloon.hidden = YES;
+//    self.myLabel.hidden = YES;
+    [self startStopReading:nil];
+    
+    // Initially make the captureSession object nil.
+    _captureSession = nil;
+    
+    // Set the initial value of the flag to NO.
+    _isReading = NO;
+    [self loadBeepSound];
+    [self getR];
+}
 /*
  #pragma mark - Navigation
  
